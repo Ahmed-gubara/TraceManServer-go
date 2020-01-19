@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package proto;
+
+service TrcmanService {
+
+  rpc IsServiceRunning(StringMessage) returns (StringMessage) {}
+  rpc Subscribe(StringMessage) returns (stream StringMessage) {}
+  rpc Publish(StringMessage) returns (StringMessage) {}
+}
+
+message StringMessage { string content = 1; }

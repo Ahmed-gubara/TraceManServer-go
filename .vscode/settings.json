@@ -1,0 +1,9 @@
+{
+    "protoc": {
+        // "path": "/path/to/protoc",
+        "compile_on_save": true,
+        "options": [
+            "--go_out=plugins=grpc:."
+        ]
+    }
+}
