@@ -17,12 +17,14 @@ import (
 
 type serviceServer struct {
 }
+
 type subscription struct {
 	channel chan string
 	filter  func(string) bool
 }
 
 var allRegisteredClients map[string]subscription = make(map[string]subscription)
+
 var clientsLock = sync.RWMutex{}
 
 func main() {
@@ -54,6 +56,7 @@ func main() {
 	}
 
 }
+
 func monitorServer(srv *grpc.Server, lis *net.Listener) {
 	for {
 		for name, info := range srv.GetServiceInfo() {
@@ -65,10 +68,6 @@ func monitorServer(srv *grpc.Server, lis *net.Listener) {
 		}
 		time.Sleep(time.Millisecond * 100)
 	}
-}
-func (s *serviceServer) IsServiceRunning(ctx context.Context, request *proto.StringMessage) (*proto.StringMessage, error) {
-	message := request.GetContent()
-	return &proto.StringMessage{Content: fmt.Sprintf("hello %s", message)}, nil
 }
 func (s *serviceServer) Subscribe(m *proto.StringMessage, w proto.TrcmanService_SubscribeServer) error {
 	filter := func(data string) bool {
@@ -94,6 +93,9 @@ func (s *serviceServer) Subscribe(m *proto.StringMessage, w proto.TrcmanService_
 	delete(allRegisteredClients, id)
 	clientsLock.Unlock()
 	return nil
+}
+func (s *serviceServer) IsServiceRunning(context.Context, *proto.StringMessage) (*proto.StringMessage, error) {
+	return &proto.StringMessage{Content: "service is running correctly"}, nil
 }
 
 func (s *serviceServer) Publish(ctx context.Context, msg *proto.StringMessage) (*proto.StringMessage, error) {
