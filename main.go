@@ -1,9 +1,14 @@
 package main
 
 import (
-	srv "trcman/services"
+	parse "trcman/parser"
+	tg "trcman/telegram"
 )
 
 func main() {
-	srv.StartGrpcService()
+	if parse.Test {
+		parse.Maino()
+		return
+	}
+	tg.StartService()
 }

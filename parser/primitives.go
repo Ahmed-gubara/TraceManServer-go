@@ -7,6 +7,11 @@ import (
 	"time"
 )
 
+type inout struct {
+	in  func(frame []byte, value ...interface{}) []byte //interface{}
+	out func(frame []byte) interface{}
+}
+
 func outU8_1(frame []byte) ([]byte, uint8) {
 	f, u := outU8(frame, 1)
 	return f, u[0]
@@ -70,7 +75,7 @@ func inU16BE(frame []byte, params ...uint16) []byte {
 }
 func inU16(frame []byte, f func([]byte, uint16), params ...uint16) []byte {
 	size := 2
-	temp := make([]byte, len(params))
+	temp := make([]byte, 0)
 	for _, num := range params {
 		u8s := make([]byte, size)
 		f(u8s, num)
@@ -110,7 +115,7 @@ func inS16BE(frame []byte, params ...int16) []byte {
 }
 func inS16(frame []byte, f func([]byte, uint16), params ...int16) []byte {
 	size := 2
-	temp := make([]byte, len(params))
+	temp := make([]byte, 0)
 	for _, num := range params {
 		u8s := make([]byte, size)
 		f(u8s, uint16(num))
@@ -150,7 +155,7 @@ func inU32BE(frame []byte, params ...uint32) []byte {
 }
 func inU32(frame []byte, f func([]byte, uint32), params ...uint32) []byte {
 	size := 4
-	temp := make([]byte, len(params))
+	temp := make([]byte, 0)
 	for _, num := range params {
 		u8s := make([]byte, size)
 		f(u8s, num)
@@ -190,7 +195,7 @@ func inS32BE(frame []byte, params ...int32) []byte {
 }
 func inS32(frame []byte, f func([]byte, uint32), params ...int32) []byte {
 	size := 4
-	temp := make([]byte, len(params))
+	temp := make([]byte, 0)
 	for _, num := range params {
 		u8s := make([]byte, size)
 		f(u8s, uint32(num))
@@ -203,7 +208,8 @@ func outStrZ(frame []byte) ([]byte, string) {
 	var length = 0
 	for {
 		c := frame[length]
-		if c != 0 {
+		if c == 0 {
+			length++
 			break
 		}
 		str.WriteByte(c)
@@ -222,7 +228,7 @@ func outStrF(frame []byte, length int) ([]byte, string) {
 func inStrF(frame []byte, str string, length int) []byte {
 	return append(frame, []byte(fmt.Sprintf("%"+string(length)+"s", str))...)
 }
-func outDatetime(frame []byte) ([]byte, time.Time) {
+func outDateTime(frame []byte) ([]byte, time.Time) {
 	// size := 4
 	frame, seconds := outU32LE(frame, 1)
 	return frame, time.Unix(int64(seconds[0]), 0)
