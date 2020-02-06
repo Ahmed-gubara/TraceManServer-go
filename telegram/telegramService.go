@@ -2,6 +2,8 @@ package telegram
 
 import (
 	"bufio"
+	"bytes"
+	"encoding/binary"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -156,23 +158,42 @@ func handleTCPConnection(conn net.Conn, bot *bot_api.BotAPI) {
 		conn.Close()
 		broadCastMessage(bot, fmt.Sprintf("connection closed from ip %s", conn.RemoteAddr().String()))
 	}()
-	for {
-		bufio.NewScanner(conn)
-		// get message, output
-		message, err := bufio.NewReader(conn).ReadBytes('\r')
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		message = append(message, 10) // add \n to match \r\n pattern
-		//conn.Write([]byte(gen0x9001()))
-		// broadCastMessage(bot, fmt.Sprintf("Message Received : %s", message))
+	scanner := bufio.NewScanner(conn)
+	scanner.Split(splitter)
+	for scanner.Scan() {
+		message := scanner.Bytes()
 		broadCastMessage(bot, fmt.Sprintf("Message Received (%v Byte) : %v", len(message), message))
-		temp := strings.TrimSpace(string(message))
-		if temp == "STOP" {
-			break
-		}
+		// message := nil
+		// // get message, output
+		// // message, err := bufio.NewReader(conn).ReadBytes('\r') //	 add \n to match \r\n pattern
+		// //conn.Write([]byte(gen0x9001()))
+		// // broadCastMessage(bot, fmt.Sprintf("Message Received : %s", message))
+		// broadCastMessage(bot, fmt.Sprintf("Message Received (%v Byte) : %v", len(message), message))
+		// temp := strings.TrimSpace(string(message))
+		// if temp == "STOP" {
+		// 	break
+		// }
 	}
+}
+func splitter(data []byte, atEOF bool) (advance int, token []byte, err error) {
+	// Return nothing if at end of file and no data passed
+	if atEOF && len(data) == 0 {
+		return 0, nil, nil
+	}
+	if i := bytes.Index(data, []byte{0x40, 0x40}); i >= 0 && i < len(data)-2 {
+		data = data[i:]
+		size := binary.LittleEndian.Uint16(data[i+2 : i+4])
+		if int(size) > (len(data)) {
+			return int(size) - (len(data)), nil, nil
+		}
+		return int(size), data, nil
+	}
+
+	if atEOF {
+		return len(data), data, nil
+	}
+
+	return
 }
 func getOutboundIP() string {
 	res, err := http.Get("http://api.ipify.org/")
