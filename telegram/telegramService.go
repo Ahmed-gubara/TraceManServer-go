@@ -174,7 +174,8 @@ func handleTCPConnection(conn net.Conn, bot *bot_api.BotAPI) {
 	scanner.Split(splitter)
 	for scanner.Scan() {
 		message := scanner.Bytes()
-		broadCastMessage(bot, fmt.Sprintf("Message Received (%v Byte) : %v", len(message), message))
+
+		broadCastMessage(bot, fmt.Sprintf("A message Received (%v Byte) : %v", len(message), message))
 		// message := nil
 		// // get message, output
 		// // message, err := bufio.NewReader(conn).ReadBytes('\r') //	 add \n to match \r\n pattern
