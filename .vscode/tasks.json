@@ -6,7 +6,11 @@
         {
             "label": "push to production",
             "type": "shell",
-            "command": "git push production master"
+            "command": "git push production master",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "label": "git remote add production",
