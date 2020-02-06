@@ -207,7 +207,7 @@ func splitter(data []byte, atEOF bool) (advance int, token []byte, err error) {
 			return int(size) - (len(data)), nil, nil
 		}
 		fmt.Printf("d size %d %+v\n", size, data)
-		return int(size) + 1, data[:size], nil
+		return int(size), data[:size], nil
 	}
 
 	if atEOF {
