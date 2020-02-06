@@ -140,7 +140,7 @@ func broadCastMessage(bot *bot_api.BotAPI, msg string) {
 	for _, chatid := range chatList {
 		log.Printf("sending to chatid %d", chatid)
 		message := bot_api.NewMessage(chatid, msg)
-		message.ParseMode = "MarkdownV2"
+		// message.ParseMode = "MarkdownV2"
 		bot.Send(message)
 	}
 }
