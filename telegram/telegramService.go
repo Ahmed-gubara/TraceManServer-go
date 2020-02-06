@@ -202,7 +202,7 @@ func splitter(data []byte, atEOF bool) (advance int, token []byte, err error) {
 
 		size := binary.LittleEndian.Uint16(data[2:4])
 		if int(size) > (len(data)) {
-			fmt.Printf("b size %d %+v\n", size, data)
+			fmt.Printf("b size %d actual %d %+v\n", size, len(data), data)
 
 			// return int(size) - (len(data)), nil, nil
 			return
