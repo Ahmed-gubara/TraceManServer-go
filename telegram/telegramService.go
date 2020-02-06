@@ -174,7 +174,7 @@ func handleTCPConnection(conn net.Conn, bot *bot_api.BotAPI) {
 	scanner.Split(splitter)
 	for scanner.Scan() {
 		message := scanner.Bytes()
-
+		fmt.Printf("maching message recieved %v", message)
 		broadCastMessage(bot, fmt.Sprintf("A message Received (%v Byte) : %v", len(message), message))
 		// message := nil
 		// // get message, output
