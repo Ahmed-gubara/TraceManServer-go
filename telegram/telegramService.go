@@ -47,6 +47,7 @@ func StartService() {
 		select {
 		case msg := <-done:
 			broadCastMessage(bot, fmt.Sprintf("Server Killed at ip %s %s", msg.String(), getOutboundIP()))
+			os.Exit(0)
 		case update := <-updates:
 			if update.Message == nil { // ignore any non-Message Updates
 				continue
