@@ -190,7 +190,7 @@ func handleTCPConnection(conn net.Conn, bot *bot_api.BotAPI) {
 
 }
 func splitter(data []byte, atEOF bool) (advance int, token []byte, err error) {
-	// fmt.Printf("%+v\n", data)
+	fmt.Printf("a %+v\n", data)
 
 	// Return nothing if at end of file and no data passed
 	if atEOF && len(data) == 0 {
@@ -202,10 +202,11 @@ func splitter(data []byte, atEOF bool) (advance int, token []byte, err error) {
 
 		size := binary.LittleEndian.Uint16(data[2:4])
 		if int(size) > (len(data)) {
+			fmt.Printf("b %+v\n", data)
 
 			return int(size) - (len(data)), nil, nil
 		}
-
+		fmt.Printf("c %+v\n", data)
 		return int(size) + 1, data[:size], nil
 	}
 
