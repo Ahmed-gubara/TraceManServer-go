@@ -138,14 +138,17 @@ func handleTCPConnection(conn net.Conn, bot *bot_api.BotAPI) {
 		broadCastMessage(bot, fmt.Sprintf("connection closed from ip %s", conn.RemoteAddr().String()))
 	}()
 	for {
+		bufio.NewScanner(conn)
 		// get message, output
-		message, _, err := bufio.NewReader(conn).ReadLine()
+		message, err := bufio.NewReader(conn).ReadBytes('\r')
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-		conn.Write([]byte(gen0x9001()))
-		broadCastMessage(bot, fmt.Sprintf("Message Received (Bytes) : %v", message))
+		message = append(message, 10) // add \n to match \r\n pattern
+		//conn.Write([]byte(gen0x9001()))
+		// broadCastMessage(bot, fmt.Sprintf("Message Received : %s", message))
+		broadCastMessage(bot, fmt.Sprintf("Message Received (%v Bytes) : %v", len(message), message))
 		temp := strings.TrimSpace(string(message))
 		if temp == "STOP" {
 			break
