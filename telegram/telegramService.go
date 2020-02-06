@@ -30,8 +30,8 @@ func StartService() {
 
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 	loadChats()
-	broadCastMessage(bot, fmt.Sprintf("ServerStarted at ip %s", getOutboundIP()))
-	defer broadCastMessage(bot, fmt.Sprintf("ServerKilled at ip %s", getOutboundIP()))
+	broadCastMessage(bot, fmt.Sprintf("Server Started at ip %s", getOutboundIP()))
+	defer broadCastMessage(bot, fmt.Sprintf("Server Killed at ip %s", getOutboundIP()))
 	go startTCPServer(bot)
 	u := bot_api.NewUpdate(0)
 	u.Timeout = 60
