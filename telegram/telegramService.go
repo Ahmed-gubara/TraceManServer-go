@@ -121,7 +121,7 @@ func startTCPServer(bot *bot_api.BotAPI) {
 	case "windows":
 		ln, _ = net.Listen("tcp", ":9000")
 	default:
-		ln, err = net.Listen("tcp", ":9000")
+		ln, err := net.Listen("tcp", ":9000")
 		if err != nil {
 			panic(err)
 		}
