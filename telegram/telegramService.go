@@ -43,21 +43,25 @@ func StartService() {
 	if err != nil {
 		log.Panicf("bot.GetUpdatesChan(u) failed with %s", err)
 	}
-	for {
-		select {
-		case msg := <-done:
-			broadCastMessage(bot, fmt.Sprintf("Server Killed at ip %s %s", msg.String(), getOutboundIP()))
-			os.Exit(0)
-		case update := <-updates:
-			if update.Message == nil { // ignore any non-Message Updates
-				continue
+
+	go func() {
+		for {
+			select {
+			case sig := <-done:
+				broadCastMessage(bot, fmt.Sprintf("Server signaled %v at ip %s", sig, getOutboundIP()))
+				os.Exit(0)
+
 			}
-			go handleUpdate(&update, bot)
-		default:
 
 		}
-	}
+	}()
+	for update := range updates {
+		if update.Message == nil { // ignore any non-Message Updates
+			continue
+		}
 
+		go handleUpdate(&update, bot)
+	}
 }
 func handleUpdate(update *bot_api.Update, bot *bot_api.BotAPI) {
 	msgCnt := update.Message.Text
