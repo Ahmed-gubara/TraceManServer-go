@@ -120,14 +120,15 @@ func startTCPServer(bot *bot_api.BotAPI) {
 	var err error
 	switch runtime.GOOS {
 	case "windows":
-		ln, _ = net.Listen("tcp", ":9000")
+		ln, err = net.Listen("tcp", ":9000")
+
 	default:
 		ln, err = net.Listen("tcp", ":9000")
-		if err != nil {
-			panic(err)
-		}
-	}
 
+	}
+	if err != nil {
+		panic(err)
+	}
 	for {
 		// accept connection
 		conn, _ := ln.Accept()
