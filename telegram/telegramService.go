@@ -43,7 +43,6 @@ func StartService() {
 	if err != nil {
 		log.Panicf("bot.GetUpdatesChan(u) failed with %s", err)
 	}
-
 	go func() {
 		for {
 			select {
@@ -57,7 +56,6 @@ func StartService() {
 		if update.Message == nil { // ignore any non-Message Updates
 			continue
 		}
-
 		go handleUpdate(&update, bot)
 	}
 }
