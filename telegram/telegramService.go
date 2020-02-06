@@ -8,9 +8,11 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"os/signal"
 	"runtime"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 
 	bot_api "github.com/go-telegram-bot-api/telegram-bot-api"
@@ -22,6 +24,8 @@ const chatsFile string = "chat.txt"
 var chatList []int64 = []int64{}
 
 func StartService() {
+	done := make(chan os.Signal, 1)
+	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	bot, error := bot_api.NewBotAPI(token)
 	if error != nil {
 		log.Panicf("tgbotapi.NewBotAPI() failed with %s", error)
@@ -31,7 +35,6 @@ func StartService() {
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 	loadChats()
 	broadCastMessage(bot, fmt.Sprintf("Server Started at ip %s", getOutboundIP()))
-	defer broadCastMessage(bot, fmt.Sprintf("Server Killed at ip %s", getOutboundIP()))
 	go startTCPServer(bot)
 	u := bot_api.NewUpdate(0)
 	u.Timeout = 60
@@ -40,9 +43,16 @@ func StartService() {
 	if err != nil {
 		log.Panicf("bot.GetUpdatesChan(u) failed with %s", err)
 	}
+
 	for update := range updates {
 		if update.Message == nil { // ignore any non-Message Updates
 			continue
+		}
+
+		select {
+		case <-done:
+			broadCastMessage(bot, fmt.Sprintf("Server Killed at ip %s", getOutboundIP()))
+			break
 		}
 		go handleUpdate(&update, bot)
 	}
