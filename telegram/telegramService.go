@@ -26,6 +26,18 @@ const chatsFile string = "chat.txt"
 var chatList []int64 = []int64{}
 
 func StartService() {
+
+	// ar := []byte{'c', 0x40, 0x40, 0x05, 0, 'a'}
+	// ar = append(ar, ar...)
+	// s := bufio.NewScanner(strings.NewReader(string(ar)))
+	// buf := make([]byte, 2)
+	// s.Buffer(buf, bufio.MaxScanTokenSize)
+	// s.Split(splitter)
+	// for s.Scan() {
+	// 	fmt.Println(s.Bytes())
+	// }
+	// return
+
 	done := make(chan os.Signal, 1)
 	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	bot, error := bot_api.NewBotAPI(token)
@@ -174,19 +186,26 @@ func handleTCPConnection(conn net.Conn, bot *bot_api.BotAPI) {
 		// 	break
 		// }
 	}
+
 }
 func splitter(data []byte, atEOF bool) (advance int, token []byte, err error) {
+	// fmt.Printf("%+v\n", data)
+
 	// Return nothing if at end of file and no data passed
 	if atEOF && len(data) == 0 {
 		return 0, nil, nil
 	}
-	if i := bytes.Index(data, []byte{0x40, 0x40}); i >= 0 && i < len(data)-2 {
+	if i := bytes.Index(data, []byte{0x40, 0x40}); i >= 0 && i < (len(data)-3) {
+
 		data = data[i:]
-		size := binary.LittleEndian.Uint16(data[i+2 : i+4])
+
+		size := binary.LittleEndian.Uint16(data[2:4])
 		if int(size) > (len(data)) {
+
 			return int(size) - (len(data)), nil, nil
 		}
-		return int(size), data, nil
+
+		return int(size) + 1, data[:size], nil
 	}
 
 	if atEOF {
