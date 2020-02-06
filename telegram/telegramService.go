@@ -52,9 +52,12 @@ func StartService() {
 		select {
 		case <-done:
 			broadCastMessage(bot, fmt.Sprintf("Server Killed at ip %s", getOutboundIP()))
-			break
+
+		default:
+			go handleUpdate(&update, bot)
+
 		}
-		go handleUpdate(&update, bot)
+
 	}
 }
 func handleUpdate(update *bot_api.Update, bot *bot_api.BotAPI) {
