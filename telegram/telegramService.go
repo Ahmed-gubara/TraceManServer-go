@@ -145,7 +145,6 @@ func handleTCPConnection(conn net.Conn, bot *bot_api.BotAPI) {
 			return
 		}
 		conn.Write([]byte(gen0x9001()))
-		broadCastMessage(bot, fmt.Sprintf("Message Received : %s", message))
 		broadCastMessage(bot, fmt.Sprintf("Message Received (Bytes) : %v", message))
 		temp := strings.TrimSpace(string(message))
 		if temp == "STOP" {
