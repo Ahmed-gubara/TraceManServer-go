@@ -72,7 +72,7 @@ func handleUpdate(update *bot_api.Update, bot *bot_api.BotAPI) {
 		//goto authorized
 	}
 
-	bot.Send(bot_api.NewMessage(update.Message.Chat.ID, "unauthorized use of bot, still under development, sorry for the inconvenience :)"))
+	bot.Send(bot_api.NewMessage(update.Message.Chat.ID, "unauthorized use of bot, still under development, sorry for the inconvenience 😊"))
 	return
 
 authorized:
