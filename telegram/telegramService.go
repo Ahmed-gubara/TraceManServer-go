@@ -45,15 +45,14 @@ func StartService() {
 	}
 
 	for update := range updates {
-		if update.Message == nil { // ignore any non-Message Updates
-			continue
-		}
-
 		select {
 		case msg := <-done:
 			broadCastMessage(bot, fmt.Sprintf("Server Killed at ip %v %s", msg, getOutboundIP()))
 
 		default:
+			if update.Message == nil { // ignore any non-Message Updates
+				continue
+			}
 			go handleUpdate(&update, bot)
 
 		}
