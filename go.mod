@@ -3,6 +3,7 @@ module trcman
 go 1.13
 
 require (
+	github.com/ethereum/go-ethereum v1.9.10 // indirect
 	github.com/go-pg/pg/v9 v9.1.1 // indirect
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
 	github.com/golang/protobuf v1.3.2
