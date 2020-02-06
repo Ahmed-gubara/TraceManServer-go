@@ -48,11 +48,9 @@ func StartService() {
 		for {
 			select {
 			case sig := <-done:
-				broadCastMessage(bot, fmt.Sprintf("Server signaled %v at ip %s", sig, getOutboundIP()))
+				broadCastMessage(bot, fmt.Sprintf("Server signaled %v at ip %s, Exiting", sig, getOutboundIP()))
 				os.Exit(0)
-
 			}
-
 		}
 	}()
 	for update := range updates {
