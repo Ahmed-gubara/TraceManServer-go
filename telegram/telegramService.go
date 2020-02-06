@@ -68,7 +68,8 @@ func handleUpdate(update *bot_api.Update, bot *bot_api.BotAPI) {
 		msg := bot_api.NewMessage(update.Message.Chat.ID, "chat saved!")
 		msg.ReplyToMessageID = update.Message.MessageID
 		bot.Send(msg)
-		goto authorized
+		return
+		//goto authorized
 	}
 
 	bot.Send(bot_api.NewMessage(update.Message.Chat.ID, "unauthorized use of bot, still under development, sorry for the inconvenience :)"))
