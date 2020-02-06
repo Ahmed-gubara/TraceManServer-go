@@ -3,7 +3,6 @@ package telegram
 import (
 	"bufio"
 	"fmt"
-	bot_api "github.com/go-telegram-bot-api/telegram-bot-api"
 	"io/ioutil"
 	"log"
 	"net"
@@ -13,6 +12,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	bot_api "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
 const token string = "970356809:AAFg6NOlJLtlIJF5OALFP9DWqNXAZjJsiVU"
@@ -120,7 +121,7 @@ func startTCPServer(bot *bot_api.BotAPI) {
 	case "windows":
 		ln, _ = net.Listen("tcp", ":9000")
 	default:
-		ln, _ = net.Listen("tcp", ":8000")
+		ln, _ = net.Listen("tcp", ":9000")
 	}
 
 	for {
