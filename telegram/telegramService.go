@@ -98,12 +98,12 @@ func handleUpdate(update *bot_api.Update, bot *bot_api.BotAPI) {
 		//goto authorized
 	}
 
-	bot.Send(bot_api.NewMessage(update.Message.Chat.ID, "<i>unauthorized use of bot, still under development, sorry for the inconvenience 😊<i>"))
+	bot.Send(bot_api.NewMessage(update.Message.Chat.ID, "<i>unauthorized use of bot, still under development, sorry for the inconvenience 😊</i>"))
 	return
 
 authorized:
 	// log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
-	msg := bot_api.NewMessage(update.Message.Chat.ID, fmt.Sprintf("no action for <code>(%s)<code>", msgCnt))
+	msg := bot_api.NewMessage(update.Message.Chat.ID, fmt.Sprintf("no action for <code>(%s)</code>", msgCnt))
 	msg.ReplyToMessageID = update.Message.MessageID
 	bot.Send(msg)
 }
