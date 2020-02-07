@@ -48,8 +48,7 @@ func StartService() {
 
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 	loadChats()
-	broadCastMessage(bot, fmt.Sprintf("Server Started at ip <pre>%s</pre>", getOutboundIP()))
-	broadCastMessage(bot, fmt.Sprintf("Server Started at ip <code>%s</code> code", getOutboundIP()))
+	broadCastMessage(bot, fmt.Sprintf("Server Started at ip <b>%s</b>", getOutboundIP()))
 	go startTCPServer(bot)
 	u := bot_api.NewUpdate(0)
 	u.Timeout = 60
@@ -62,7 +61,7 @@ func StartService() {
 		for {
 			select {
 			case sig := <-done:
-				broadCastMessage(bot, fmt.Sprintf("Server signaled %v at ip %s, Exiting now", sig, getOutboundIP()))
+				broadCastMessage(bot, fmt.Sprintf("Server signaled <code>%v</code> at ip %s, Exiting now", sig, getOutboundIP()))
 				os.Exit(0)
 			}
 		}
@@ -99,12 +98,12 @@ func handleUpdate(update *bot_api.Update, bot *bot_api.BotAPI) {
 		//goto authorized
 	}
 
-	bot.Send(bot_api.NewMessage(update.Message.Chat.ID, "unauthorized use of bot, still under development, sorry for the inconvenience 😊"))
+	bot.Send(bot_api.NewMessage(update.Message.Chat.ID, "<i>unauthorized use of bot, still under development, sorry for the inconvenience 😊<i>"))
 	return
 
 authorized:
 	// log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
-	msg := bot_api.NewMessage(update.Message.Chat.ID, fmt.Sprintf("no action for (%s)", msgCnt))
+	msg := bot_api.NewMessage(update.Message.Chat.ID, fmt.Sprintf("no action for <code>(%s)<code>", msgCnt))
 	msg.ReplyToMessageID = update.Message.MessageID
 	bot.Send(msg)
 }
@@ -169,18 +168,18 @@ func startTCPServer(bot *bot_api.BotAPI) {
 
 }
 func handleTCPConnection(conn net.Conn, bot *bot_api.BotAPI) {
-	broadCastMessage(bot, fmt.Sprintf("connection started with ip <pre>%s</pre>", conn.RemoteAddr().String()))
+	broadCastMessage(bot, fmt.Sprintf("connection started with ip %s", conn.RemoteAddr().String()))
 
 	defer func() {
 		conn.Close()
-		broadCastMessage(bot, fmt.Sprintf("connection closed from ip <pre>%s</pre>", conn.RemoteAddr().String()))
+		broadCastMessage(bot, fmt.Sprintf("connection closed from ip %s", conn.RemoteAddr().String()))
 	}()
 	scanner := bufio.NewScanner(conn)
 	scanner.Split(splitter)
 	for scanner.Scan() {
 		message := scanner.Bytes()
 		fmt.Printf("maching message recieved %v", message)
-		broadCastMessage(bot, fmt.Sprintf("A message Received (%d Byte) hex : <pre>[% x]</pre>", len(message), message))
+		broadCastMessage(bot, fmt.Sprintf("A message Received (%d Byte) hex : <code>[% x]</code>", len(message), message))
 		// message := nil
 		// // get message, output
 		// // message, err := bufio.NewReader(conn).ReadBytes('\r') //	 add \n to match \r\n pattern
