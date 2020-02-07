@@ -168,17 +168,17 @@ func startTCPServer(bot *bot_api.BotAPI) {
 
 }
 func handleTCPConnection(conn net.Conn, bot *bot_api.BotAPI) {
-	broadCastMessage(bot, fmt.Sprintf("connection started with ip <code>%s</code>", conn.RemoteAddr().String()))
+	broadCastMessage(bot, fmt.Sprintf("connection started with ip <pre>%s</pre>", conn.RemoteAddr().String()))
 	defer func() {
 		conn.Close()
-		broadCastMessage(bot, fmt.Sprintf("connection closed from ip <code>%s</code>", conn.RemoteAddr().String()))
+		broadCastMessage(bot, fmt.Sprintf("connection closed from ip <pre>%s</pre>", conn.RemoteAddr().String()))
 	}()
 	scanner := bufio.NewScanner(conn)
 	scanner.Split(splitter)
 	for scanner.Scan() {
 		message := scanner.Bytes()
 		fmt.Printf("maching message recieved %v", message)
-		broadCastMessage(bot, fmt.Sprintf("A message Received (%d Byte) hex : <code>[% x]</code>", len(message), message))
+		broadCastMessage(bot, fmt.Sprintf("A message Received (%d Byte) hex : <pre>[% x]</pre>", len(message), message))
 		// message := nil
 		// // get message, output
 		// // message, err := bufio.NewReader(conn).ReadBytes('\r') //	 add \n to match \r\n pattern
