@@ -168,10 +168,10 @@ func startTCPServer(bot *bot_api.BotAPI) {
 
 }
 func handleTCPConnection(conn net.Conn, bot *bot_api.BotAPI) {
-	broadCastMessage(bot, fmt.Sprintf("connection started with ip %s", conn.RemoteAddr().String()))
+	broadCastMessage(bot, fmt.Sprintf("connection started with ip <code>%s</code>", conn.RemoteAddr().String()))
 	defer func() {
 		conn.Close()
-		broadCastMessage(bot, fmt.Sprintf("connection closed from ip %s", conn.RemoteAddr().String()))
+		broadCastMessage(bot, fmt.Sprintf("connection closed from ip <code>%s</code>", conn.RemoteAddr().String()))
 	}()
 	scanner := bufio.NewScanner(conn)
 	scanner.Split(splitter)

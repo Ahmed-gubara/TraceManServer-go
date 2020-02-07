@@ -15,7 +15,7 @@
         {
             "label": "git remote add production",
             "type": "shell",
-            "command": "git remote add production ssh://ahmed@ahmedgubara.ddns.net:1993/~/sources/trcman.git"
+            "command": "git remote add production ssh://ahmed@ahmedgubara.ddns.net:1993/~/gits/trcman.git"
         }
     ]
 }
