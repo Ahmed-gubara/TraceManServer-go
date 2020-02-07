@@ -97,8 +97,9 @@ func handleUpdate(update *bot_api.Update, bot *bot_api.BotAPI) {
 		return
 		//goto authorized
 	}
-
-	bot.Send(bot_api.NewMessage(update.Message.Chat.ID, "<i>unauthorized use of bot, still under development, sorry for the inconvenience 😊</i>"))
+	m := bot_api.NewMessage(update.Message.Chat.ID, "<i>unauthorized use of bot, still under development, sorry for the inconvenience 😊</i>")
+	m.ParseMode = "HTML"
+	bot.Send(m)
 	return
 
 authorized:
