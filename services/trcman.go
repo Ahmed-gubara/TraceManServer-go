@@ -42,7 +42,7 @@ func StartTrcManServer(connection <-chan *OBDConnection) serviceServer {
 func handleOBDConnection(obdconn *OBDConnection) {
 	for recieved := range obdconn.recieved {
 		protocolID := binary.BigEndian.Uint16(recieved[25:27])
-		Broadcast(fmt.Sprintf("Received %d (%d Byte) hex : \n<code>% x</code>", protocolID, len(recieved), recieved))
+		Broadcast(fmt.Sprintf("Received 0x%x (%d Byte) hex : \n<code>% x</code>", protocolID, len(recieved), recieved))
 	}
 }
 
