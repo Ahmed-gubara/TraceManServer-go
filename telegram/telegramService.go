@@ -156,7 +156,7 @@ func panicif(err error) {
 func startGrpcClient(bot *bot_api.BotAPI) {
 	var conn *grpc.ClientConn
 
-	conn, err := grpc.Dial(":4041", grpc.WithInsecure())
+	conn, err := grpc.Dial("ahmedgubara.ddns.net:4041", grpc.WithInsecure())
 	panicif(err)
 	defer conn.Close()
 	c := proto.NewTrcmanServiceClient(conn)
