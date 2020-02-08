@@ -203,7 +203,7 @@ func getPayload(frame []byte, rType reflect.Type, tag reflect.StructTag, parent 
 }
 
 type ProtocolPrefix struct {
-	ProtocolHead    []uint8 //2
+	ProtocolHead    [2]uint8 //2
 	ProtocolLength  uint16
 	ProtocolVersion uint8
 	DeviceID        string
@@ -261,7 +261,7 @@ func SetPayload(frame []byte, rType interface{}) []byte {
 func Encapsulate(protocolversion uint8, deviceID string, protocolID uint16, payload interface{}) []byte {
 	pload := SetPayload([]byte{}, payload)
 	var protocolLength uint16 = uint16(len(pload)) + 2 + 2 + 1 + 20 + 2 + 2 + 2
-	prefix := ProtocolPrefix{ProtocolHead: []byte{0x40, 0x40}, ProtocolLength: protocolLength, ProtocolVersion: protocolversion, DeviceID: deviceID, ProtocolID: protocolID}
+	prefix := ProtocolPrefix{ProtocolHead: [2]byte{0x40, 0x40}, ProtocolLength: protocolLength, ProtocolVersion: protocolversion, DeviceID: deviceID, ProtocolID: protocolID}
 	frame := SetPayload([]byte{}, prefix)
 	frame = append(frame, pload...)
 	crc := CRC_MakeCrc(frame)
