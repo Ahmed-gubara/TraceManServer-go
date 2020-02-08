@@ -55,6 +55,7 @@ func handleOBDConnection(obdconn *OBDConnection) {
 			lResponse := parser.LoginResponse0x9001{IPAddress: getIP(), Port: 9000, ServerTime: time.Now().UTC()}
 			Broadcast(fmt.Sprintf("Respoinding : \n<code>%+v</code>", lResponse))
 			frame := parser.Encapsulate(prefix.ProtocolVersion, prefix.DeviceID, 0x9001, lResponse)
+			Broadcast(fmt.Sprintf("sending 0x%x %s (%d Byte) from %s hex : \n<code>% x</code>", 0x9001, parser.GetMessageType(0x9001), len(frame), prefix.DeviceID, frame))
 			obdconn.send <- frame
 		default:
 			Broadcast(fmt.Sprintf("not handled"))
