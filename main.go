@@ -4,11 +4,16 @@ import (
 	"fmt"
 	term "github.com/nsf/termbox-go"
 	"os"
+	"trcman/parser"
 	services "trcman/services"
 	tg "trcman/telegram"
 )
 
 func main() {
+
+	if parser.Test {
+		parser.Maino()
+	}
 	OBDconnections := make(chan *services.OBDConnection, 10)
 
 	println("A")

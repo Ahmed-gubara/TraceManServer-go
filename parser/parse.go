@@ -8,7 +8,7 @@ import (
 )
 
 //Test dd
-const Test = false
+const Test = true
 
 func atb(data string) []byte {
 	frame := strings.Split(data, " ")
@@ -55,3 +55,4 @@ func Maino() {
 func parseProtocol(frame []byte) {
 
 }
+func in

@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"encoding/binary"
 	"fmt"
 	"sync"
 	"trcman/proto"
@@ -40,9 +41,14 @@ func StartTrcManServer(connection <-chan *OBDConnection) serviceServer {
 }
 func handleOBDConnection(obdconn *OBDConnection) {
 	for recieved := range obdconn.recieved {
-		Broadcast(fmt.Sprintf("Received (%d Byte) hex : \n<code>% x</code>", len(recieved), recieved))
+		protocolID := binary.BigEndian.Uint16(recieved[25:27])
+		Broadcast(fmt.Sprintf("Received %d (%d Byte) hex : \n<code>% x</code>", protocolID, len(recieved), recieved))
 	}
 }
+
+// func ()  {
+
+// }
 func (s *serviceServer) Subscribe(m *proto.StringMessage, w proto.TrcmanService_SubscribeServer) error {
 	filter := func(data string) bool {
 		return true
