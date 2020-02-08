@@ -226,7 +226,7 @@ func outStrF(frame []byte, length int) ([]byte, string) {
 	return frame[length:], string(frame[:length])
 }
 func inStrF(frame []byte, str string, length int) []byte {
-	return append(frame, []byte(fmt.Sprintf("%"+string(length)+"s", str))...)
+	return append(frame, []byte(fmt.Sprintf(fmt.Sprintf("%%%ds", length), str))...)
 }
 func outDateTime(frame []byte) ([]byte, time.Time) {
 	// size := 4

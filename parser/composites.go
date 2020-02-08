@@ -121,6 +121,7 @@ func getPayload(frame []byte, rType reflect.Type, tag reflect.StructTag, parent 
 					panic("no length specificed")
 				}
 				frame, str := outStrF(frame, length)
+
 				return frame, reflect.ValueOf(str)
 			}
 		case strings.HasPrefix(strType, "str"):
@@ -265,14 +266,21 @@ func SetPayload(frame []byte, rType interface{}) []byte {
 
 }
 func Encapsulate(protocolversion uint8, deviceID string, protocolID uint16, payload interface{}) []byte {
+
 	pload := SetPayload([]byte{}, payload)
+	fmt.Printf("payload size %d\n", len(pload))
 	var protocolLength uint16 = uint16(len(pload)) + 2 + 2 + 1 + 20 + 2 + 2 + 2
+	fmt.Printf("protocolLength %d\n", protocolLength)
 	prefix := ProtocolPrefix{ProtocolHead: [2]byte{0x40, 0x40}, ProtocolLength: protocolLength, ProtocolVersion: protocolversion, DeviceID: deviceID, ProtocolID: protocolID}
 	frame := SetPayload([]byte{}, prefix)
+	fmt.Printf("prefix size %d\n", len(frame))
 	frame = append(frame, pload...)
+	fmt.Printf("frame size %d\n", len(frame))
+
 	crc := CRC_MakeCrc(frame)
 	frame = inU16LE(frame, crc)
 	frame = inU8(frame, 0x0d, 0x0a)
+	fmt.Printf("final frame size %d\n", len(frame))
 	return frame
 }
 func setPayload(frame []byte, rValue reflect.Value, tag reflect.StructTag, parent *reflect.Value) []byte {
@@ -297,12 +305,17 @@ func setPayload(frame []byte, rValue reflect.Value, tag reflect.StructTag, paren
 			}
 		case strings.HasPrefix(strType, "strf"):
 			{
+				fmt.Printf("before : %d\n", len(frame))
+
 				splits := strings.Split(strType, ",")
 				length, err := strconv.Atoi(splits[1])
+
 				if err != nil {
 					panic("no length specificed")
 				}
 				frame = inStrF(frame, rValue.Interface().(string), length)
+				fmt.Printf("after : %d\n", len(frame))
+
 				return frame
 			}
 		case strings.HasPrefix(strType, "str"):
