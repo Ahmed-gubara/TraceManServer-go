@@ -42,7 +42,8 @@ func StartTrcManServer(connection <-chan *OBDConnection) serviceServer {
 }
 func handleOBDConnection(obdconn *OBDConnection) {
 	for recieved := range obdconn.recieved {
-		recieved, prefix := parser.GetProtocolPrefix(recieved)
+		recieved, i := parser.GetPayload(recieved, parser.ProtocolPrefix{})
+		prefix := i.(parser.ProtocolPrefix)
 		msgType := parser.GetMessageType(prefix.ProtocolID)
 		Broadcast(fmt.Sprintf("Received 0x%x %s (%d Byte) from %s hex : \n<code>% x</code>", prefix.ProtocolID, msgType, len(recieved), prefix.DeviceID, recieved))
 		switch prefix.ProtocolID {
