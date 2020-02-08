@@ -213,28 +213,29 @@ type ProtocolPrefix struct {
 func (f ProtocolPrefix) inFrameSize() int {
 	return 2 + 2 + 1 + 20 + 2
 }
-func GetProtocolPrefix(frame []byte) ([]byte, ProtocolPrefix) {
-	frame, protocolHead := outU8(frame, 2)
-	frame, protocolLength := outU16LE1(frame)
-	frame, protocolVersion := outU8_1(frame)
-	frame, deviceID := outStrF(frame, 20)
-	frame, protocolID := outU16BE1(frame)
-	return frame, ProtocolPrefix{
-		ProtocolHead:    protocolHead,
-		ProtocolLength:  protocolLength,
-		ProtocolVersion: protocolVersion,
-		DeviceID:        deviceID,
-		ProtocolID:      protocolID,
-	}
-}
-func SetProtocolPrefix(frame []byte, pre ProtocolPrefix) []byte {
-	frame = inU8(frame, pre.ProtocolHead...)
-	frame = inU16LE(frame, pre.ProtocolLength)
-	frame = inU8(frame, pre.ProtocolVersion)
-	frame = inStrF(frame, pre.DeviceID, 20)
-	frame = inU16BE(frame, pre.ProtocolID)
-	return frame
-}
+
+// func GetProtocolPrefix(frame []byte) ([]byte, ProtocolPrefix) {
+// 	frame, protocolHead := outU8(frame, 2)
+// 	frame, protocolLength := outU16LE1(frame)
+// 	frame, protocolVersion := outU8_1(frame)
+// 	frame, deviceID := outStrF(frame, 20)
+// 	frame, protocolID := outU16BE1(frame)
+// 	return frame, ProtocolPrefix{
+// 		ProtocolHead:    protocolHead,
+// 		ProtocolLength:  protocolLength,
+// 		ProtocolVersion: protocolVersion,
+// 		DeviceID:        deviceID,
+// 		ProtocolID:      protocolID,
+// 	}
+// }
+// func SetProtocolPrefix(frame []byte, pre ProtocolPrefix) []byte {
+// 	frame = inU8(frame, pre.ProtocolHead...)
+// 	frame = inU16LE(frame, pre.ProtocolLength)
+// 	frame = inU8(frame, pre.ProtocolVersion)
+// 	frame = inStrF(frame, pre.DeviceID, 20)
+// 	frame = inU16BE(frame, pre.ProtocolID)
+// 	return frame
+// }
 
 type ProtocolSufix struct {
 	crc          uint16
