@@ -206,7 +206,7 @@ type ProtocolPrefix struct {
 	ProtocolHead    [2]uint8 //2
 	ProtocolLength  uint16
 	ProtocolVersion uint8
-	DeviceID        string
+	DeviceID        string `string:"strf,20"`
 	ProtocolID      uint16
 }
 
