@@ -92,7 +92,7 @@ var boolBit = [8]uint8{1, 2, 4, 8, 16, 32, 64, 128}
 
 func GetPayload(frame []byte, rType interface{}) ([]byte, interface{}) {
 	frame, interfaceValue := getPayload(frame, reflect.TypeOf(rType), "", nil)
-	return frame, interfaceValue
+	return frame, interfaceValue.Interface
 }
 func getPayload(frame []byte, rType reflect.Type, tag reflect.StructTag, parent *reflect.Value) ([]byte, reflect.Value) {
 	switch rType.Kind() {
