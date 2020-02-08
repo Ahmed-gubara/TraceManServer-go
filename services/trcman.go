@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"sync"
+	"trcman/parser"
 	"trcman/proto"
 
 	guuid "github.com/google/uuid"
@@ -42,7 +43,12 @@ func StartTrcManServer(connection <-chan *OBDConnection) serviceServer {
 func handleOBDConnection(obdconn *OBDConnection) {
 	for recieved := range obdconn.recieved {
 		protocolID := binary.BigEndian.Uint16(recieved[25:27])
-		Broadcast(fmt.Sprintf("Received 0x%x (%d Byte) hex : \n<code>% x</code>", protocolID, len(recieved), recieved))
+		msgType := parser.GetMessageType(protocolID)
+		Broadcast(fmt.Sprintf("Received 0x%x %s (%d Byte) hex : \n<code>% x</code>", protocolID, msgType, len(recieved), recieved))
+		switch protocolID {
+		case 0x1001:
+
+		}
 	}
 }
 

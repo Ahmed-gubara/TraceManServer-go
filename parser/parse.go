@@ -42,7 +42,7 @@ func Maino() {
 	// frame, statData := GetPayload(frame, LoginMessage0x1001{})
 	// fmt.Printf("\n\n\nstatData %+v\n", statData)
 
-	d := LoginResponseMessage0x9001{
+	d := LoginResponse0x9001{
 		IPAddress:  [...]uint8{1, 2, 3, 4},
 		Port:       9000,
 		ServerTime: time.Now(),
