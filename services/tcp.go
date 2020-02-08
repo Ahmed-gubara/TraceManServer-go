@@ -10,6 +10,7 @@ import (
 	"net"
 	"net/http"
 	"runtime"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -110,6 +111,17 @@ func getOutboundIP() string {
 
 	content, _ := ioutil.ReadAll(res.Body)
 	return string(content)
+}
+func getIP() [4]byte {
+	ip := getOutboundIP()
+
+	ss := strings.Split(ip, ".")
+	var iparray [4]byte
+	for i := 0; i < 4; i++ {
+		num, _ := strconv.Atoi(ss[i])
+		iparray[i] = byte(num)
+	}
+	return iparray
 }
 func handleError(txt string, err error) {
 	if err != nil {

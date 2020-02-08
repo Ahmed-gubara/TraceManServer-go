@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"sync"
+	"time"
 	"trcman/parser"
 	"trcman/proto"
 
@@ -49,8 +50,13 @@ func handleOBDConnection(obdconn *OBDConnection) {
 			_, payload := parser.GetPayload(recieved, parser.Login0x1001{})
 			login0x1001 := payload.(parser.Login0x1001)
 			Broadcast(fmt.Sprintf("Received and parsed 0x%x %s (%d Byte) from %s hex : \n<code>%+v</code>", prefix.ProtocolID, msgType, len(recieved), prefix.DeviceID, login0x1001))
-
+			lResponse := parser.LoginResponse0x9001{IPAddress: getIP(), Port: 9000, ServerTime: time.Now().UTC()}
+			Broadcast(fmt.Sprintf("Respoinding : \n<code>%+v</code>", lResponse))
+			parser.Encapsulate(prefix.ProtocolVersion, prefix.DeviceID, 0x9001, lResponse)
+		default:
+			Broadcast(fmt.Sprintf("not handled"))
 		}
+
 	}
 }
 

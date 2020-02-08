@@ -1,7 +1,6 @@
 package man
 
 import (
-	parse "trcman/parser"
 	tg "trcman/telegram"
 )
 
@@ -10,5 +9,5 @@ func main() {
 	// 	parse.Maino()
 	// 	return
 	// }
-	tg.StartService()
+	tg.StartTelegramService()
 }

@@ -258,6 +258,17 @@ func SetPayload(frame []byte, rType interface{}) []byte {
 	return setPayload(frame, reflect.ValueOf(rType), "", nil)
 
 }
+func Encapsulate(protocolversion uint8, deviceID string, protocolID uint16, payload interface{}) []byte {
+	pload := SetPayload([]byte{}, payload)
+	var protocolLength uint16 = uint16(len(pload)) + 2 + 2 + 1 + 20 + 2 + 2 + 2
+	prefix := ProtocolPrefix{ProtocolHead: []byte{0x40, 0x40}, ProtocolLength: protocolLength, ProtocolVersion: protocolversion, DeviceID: deviceID, ProtocolID: protocolID}
+	frame := SetPayload([]byte{}, prefix)
+	frame = append(frame, pload...)
+	crc := CRC_MakeCrc(frame)
+	frame = inU16LE(frame, crc)
+	frame = inU8(frame, 0x0d, 0x0a)
+	return frame
+}
 func setPayload(frame []byte, rValue reflect.Value, tag reflect.StructTag, parent *reflect.Value) []byte {
 	switch rValue.Kind() {
 	case reflect.Bool:

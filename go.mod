@@ -8,6 +8,7 @@ require (
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
 	github.com/golang/protobuf v1.3.2
 	github.com/google/uuid v1.1.1
+	github.com/howeyc/crc16 v0.0.0-20171223171357-2b2a61e366a6
 	github.com/jinzhu/gorm v1.9.12 // indirect
 	github.com/mattn/go-runewidth v0.0.8 // indirect
 	github.com/nsf/termbox-go v0.0.0-20191229070316-58d4fcbce2a7
