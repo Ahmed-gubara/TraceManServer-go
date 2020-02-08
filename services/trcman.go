@@ -44,6 +44,7 @@ func handleOBDConnection(obdconn *OBDConnection) {
 	for recieved := range obdconn.recieved {
 		recieved, i := parser.GetPayload(recieved, parser.ProtocolPrefix{})
 		prefix := i.(parser.ProtocolPrefix)
+		fmt.Printf("ProtocolPrefix %+v", prefix)
 		msgType := parser.GetMessageType(prefix.ProtocolID)
 		Broadcast(fmt.Sprintf("Received 0x%x %s (%d Byte) from %s hex : \n<code>% x</code>", prefix.ProtocolID, msgType, len(recieved), prefix.DeviceID, recieved))
 		switch prefix.ProtocolID {

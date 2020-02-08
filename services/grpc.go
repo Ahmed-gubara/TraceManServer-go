@@ -10,7 +10,7 @@ import (
 )
 
 func StartGRPCService(server *serviceServer) {
-	listener, err := net.Listen("tcp", "ahmedgubara.ddns.net:4041")
+	listener, err := net.Listen("tcp", ":4041")
 	if err != nil {
 		panic(err)
 	}

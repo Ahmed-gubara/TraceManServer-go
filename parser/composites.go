@@ -137,8 +137,13 @@ func getPayload(frame []byte, rType reflect.Type, tag reflect.StructTag, parent 
 		frame, val := outU32LE1(frame)
 		return frame, reflect.ValueOf(val)
 	case reflect.Uint16:
+		if v, f := tag.Lookup("binary"); f && strings.ToUpper(v) == "BE" {
+			frame, val := outU16BE1(frame)
+			return frame, reflect.ValueOf(val)
+		}
 		frame, val := outU16LE1(frame)
 		return frame, reflect.ValueOf(val)
+
 	case reflect.Uint8:
 		frame, val := outU8_1(frame)
 		return frame, reflect.ValueOf(val)
@@ -207,7 +212,7 @@ type ProtocolPrefix struct {
 	ProtocolLength  uint16
 	ProtocolVersion uint8
 	DeviceID        string `string:"strf,20"`
-	ProtocolID      uint16
+	ProtocolID      uint16 `binary:"BE"`
 }
 
 func (f ProtocolPrefix) inFrameSize() int {
