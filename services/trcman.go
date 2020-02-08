@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"encoding/binary"
 	"fmt"
 	"sync"
 	"trcman/parser"
@@ -42,11 +41,14 @@ func StartTrcManServer(connection <-chan *OBDConnection) serviceServer {
 }
 func handleOBDConnection(obdconn *OBDConnection) {
 	for recieved := range obdconn.recieved {
-		protocolID := binary.BigEndian.Uint16(recieved[25:27])
-		msgType := parser.GetMessageType(protocolID)
-		Broadcast(fmt.Sprintf("Received 0x%x %s (%d Byte) hex : \n<code>% x</code>", protocolID, msgType, len(recieved), recieved))
-		switch protocolID {
+		recieved, prefix := parser.GetProtocolPrefix(recieved)
+		msgType := parser.GetMessageType(prefix.ProtocolID)
+		Broadcast(fmt.Sprintf("Received 0x%x %s (%d Byte) from %s hex : \n<code>% x</code>", prefix.ProtocolID, msgType, len(recieved), prefix.DeviceID, recieved))
+		switch prefix.ProtocolID {
 		case 0x1001:
+			_, payload := parser.GetPayload(recieved, parser.Login0x1001{})
+			login0x1001 := payload.(parser.Login0x1001)
+			Broadcast(fmt.Sprintf("Received and parsed 0x%x %s (%d Byte) from %s hex : \n<code>%+v</code>", prefix.ProtocolID, msgType, len(recieved), prefix.DeviceID, login0x1001))
 
 		}
 	}

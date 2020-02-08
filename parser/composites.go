@@ -203,11 +203,11 @@ func getPayload(frame []byte, rType reflect.Type, tag reflect.StructTag, parent 
 }
 
 type ProtocolPrefix struct {
-	protocolHead    []uint8 //2
-	protocolLength  uint16
-	protocolVersion uint8
-	deviceID        string
-	protocolID      uint16
+	ProtocolHead    []uint8 //2
+	ProtocolLength  uint16
+	ProtocolVersion uint8
+	DeviceID        string
+	ProtocolID      uint16
 }
 
 func (f ProtocolPrefix) inFrameSize() int {
@@ -220,19 +220,19 @@ func GetProtocolPrefix(frame []byte) ([]byte, ProtocolPrefix) {
 	frame, deviceID := outStrF(frame, 20)
 	frame, protocolID := outU16BE1(frame)
 	return frame, ProtocolPrefix{
-		protocolHead:    protocolHead,
-		protocolLength:  protocolLength,
-		protocolVersion: protocolVersion,
-		deviceID:        deviceID,
-		protocolID:      protocolID,
+		ProtocolHead:    protocolHead,
+		ProtocolLength:  protocolLength,
+		ProtocolVersion: protocolVersion,
+		DeviceID:        deviceID,
+		ProtocolID:      protocolID,
 	}
 }
 func SetProtocolPrefix(frame []byte, pre ProtocolPrefix) []byte {
-	frame = inU8(frame, pre.protocolHead...)
-	frame = inU16LE(frame, pre.protocolLength)
-	frame = inU8(frame, pre.protocolVersion)
-	frame = inStrF(frame, pre.deviceID, 20)
-	frame = inU16BE(frame, pre.protocolID)
+	frame = inU8(frame, pre.ProtocolHead...)
+	frame = inU16LE(frame, pre.ProtocolLength)
+	frame = inU8(frame, pre.ProtocolVersion)
+	frame = inStrF(frame, pre.DeviceID, 20)
+	frame = inU16BE(frame, pre.ProtocolID)
 	return frame
 }
 
