@@ -278,6 +278,7 @@ func Encapsulate(protocolversion uint8, deviceID string, protocolID uint16, payl
 func setPayload(frame []byte, rValue reflect.Value, tag reflect.StructTag, parent *reflect.Value) []byte {
 	switch rValue.Kind() {
 	case reflect.Bool:
+		return frame
 		panic("logic not ready,can't be set")
 		// if dep := tag.Get("depend"); len(dep) > 0 {
 		// 	if specs := strings.Split(dep, ","); len(specs) == 2 {
@@ -335,10 +336,11 @@ func setPayload(frame []byte, rValue reflect.Value, tag reflect.StructTag, paren
 		return frame
 	case reflect.Slice:
 
-		if lengthfield, ok := tag.Lookup("length"); !ok {
+		if _, ok := tag.Lookup("length"); !ok {
 			panic(fmt.Sprintf("slice with no defined length %s.%s", parent.Type().Name(), rValue.Type().Name()))
 		} else {
-			parent.FieldByName(lengthfield).Set(reflect.ValueOf(rValue.Len()))
+			//fmt.Printf("%s ..........", parent.FieldByName(lengthfield))
+			//parent.FieldByName(lengthfield).Set(reflect.ValueOf(uint8(rValue.Len())))
 
 			for i := 0; i < rValue.Len(); i++ {
 				frame1 := setPayload(frame, rValue.Index(i), tag, parent)

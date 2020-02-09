@@ -1,10 +1,10 @@
-package man
+package main
 
 import (
 	tg "trcman/telegram"
 )
 
-func main() {
+func main2() {
 	// if parse.Test {
 	// 	parse.Maino()
 	// 	return
