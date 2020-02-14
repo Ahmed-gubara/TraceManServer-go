@@ -218,7 +218,7 @@ func outStrZ(frame []byte) ([]byte, string) {
 	return frame[length:], str.String()
 }
 func inStrZ(frame []byte, str string) []byte {
-	return append(frame, []byte(str)...)
+	return append(frame, append([]byte(str), 0x00)...)
 
 }
 func outStrF(frame []byte, length int) ([]byte, string) {

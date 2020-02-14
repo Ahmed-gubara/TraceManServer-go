@@ -50,44 +50,44 @@ func getGPSData(frame []byte) ([]byte, GPSData) {
 	return frame, GPSData{GPSCount: gpsCount, GPSArray: gpsArray}
 }
 func GetVState(frame []byte) ([]byte, VState) {
-	bit := []uint8{1, 2, 4, 8, 16, 32, 64, 128}
-	frame, s0 := outU8_1(frame)
-	frame, s1 := outU8_1(frame)
-	frame, s2 := outU8_1(frame)
-	frame, s3 := outU8_1(frame)
+	// bit := []uint8{1, 2, 4, 8, 16, 32, 64, 128}
+	// frame, s0 := outU8_1(frame)
+	// frame, s1 := outU8_1(frame)
+	// frame, s2 := outU8_1(frame)
+	// frame, s3 := outU8_1(frame)
 	return frame, VState{
-		ExhaustEmission:              s0&bit[7] == 1, //s0
-		IdleEngine:                   s0&bit[6] == 1,
-		HardDeceleration:             s0&bit[5] == 1,
-		HardAcceleration:             s0&bit[4] == 1,
-		HighEngineCoolantTemperature: s0&bit[3] == 1,
-		Speeding:                     s0&bit[2] == 1,
-		Towing:                       s0&bit[1] == 1,
-		LowVoltage:                   s0&bit[0] == 1,
-		Tamper:                       s1&bit[7] == 1, //s1
-		Crash:                        s1&bit[6] == 1,
-		Emergency:                    s1&bit[5] == 1,
-		FatigueDriving:               s1&bit[4] == 1,
-		SharpTurn:                    s1&bit[3] == 1,
-		QuickLaneChange:              s1&bit[2] == 1,
-		PowerOn:                      s1&bit[1] == 1,
-		HighRPM:                      s1&bit[0] == 1,
-		Mil:                          s2&bit[7] == 1, //s2
-		ObdCommunicationError:        s2&bit[6] == 1,
-		PowerOff:                     s2&bit[5] == 1,
-		NoGPSdevice:                  s2&bit[4] == 1,
-		PrivacyStatus:                s2&bit[3] == 1,
-		IgnitionOn:                   s2&bit[2] == 1,
-		IllegalIgnition:              s2&bit[1] == 1,
-		IllegalEnter:                 s2&bit[0] == 1,
-		Reserved1:                    s3&bit[7] == 1, //s3
-		Reserved2:                    s3&bit[6] == 1,
-		Door2Stat:                    s3&bit[5] == 1,
-		Door1Stat:                    s3&bit[4] == 1,
-		Vibration:                    s3&bit[3] == 1,
-		DangerousDriving:             s3&bit[2] == 1,
-		NoCardPresented:              s3&bit[1] == 1,
-		Unlock:                       s3&bit[0] == 1,
+		// ExhaustEmission:              s0&bit[7] == 1, //s0
+		// IdleEngine:                   s0&bit[6] == 1,
+		// HardDeceleration:             s0&bit[5] == 1,
+		// HardAcceleration:             s0&bit[4] == 1,
+		// HighEngineCoolantTemperature: s0&bit[3] == 1,
+		// Speeding:                     s0&bit[2] == 1,
+		// Towing:                       s0&bit[1] == 1,
+		// LowVoltage:                   s0&bit[0] == 1,
+		// Tamper:                       s1&bit[7] == 1, //s1
+		// Crash:                        s1&bit[6] == 1,
+		// Emergency:                    s1&bit[5] == 1,
+		// FatigueDriving:               s1&bit[4] == 1,
+		// SharpTurn:                    s1&bit[3] == 1,
+		// QuickLaneChange:              s1&bit[2] == 1,
+		// PowerOn:                      s1&bit[1] == 1,
+		// HighRPM:                      s1&bit[0] == 1,
+		// Mil:                          s2&bit[7] == 1, //s2
+		// ObdCommunicationError:        s2&bit[6] == 1,
+		// PowerOff:                     s2&bit[5] == 1,
+		// NoGPSdevice:                  s2&bit[4] == 1,
+		// PrivacyStatus:                s2&bit[3] == 1,
+		// IgnitionOn:                   s2&bit[2] == 1,
+		// IllegalIgnition:              s2&bit[1] == 1,
+		// IllegalEnter:                 s2&bit[0] == 1,
+		// Reserved1:                    s3&bit[7] == 1, //s3
+		// Reserved2:                    s3&bit[6] == 1,
+		// Door2Stat:                    s3&bit[5] == 1,
+		// Door1Stat:                    s3&bit[4] == 1,
+		// Vibration:                    s3&bit[3] == 1,
+		// DangerousDriving:             s3&bit[2] == 1,
+		// NoCardPresented:              s3&bit[1] == 1,
+		// Unlock:                       s3&bit[0] == 1,
 	}
 }
 func GetStatData(frame []byte) ([]byte, StatData) {
