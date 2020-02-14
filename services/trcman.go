@@ -140,6 +140,6 @@ func Broadcast(msg string) {
 	clientsLock.RUnlock()
 }
 func fr(data interface{}) string {
-	str, _ := json.MarshalIndent(data, "", "    ")
+	str, _ := json.MarshalIndent(data, "", "  ")
 	return string(str)
 }
