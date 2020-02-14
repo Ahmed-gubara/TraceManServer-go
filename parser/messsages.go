@@ -88,3 +88,8 @@ type Heartbeat0x1003 struct {
 }
 type HearbeatResponse0x9003 struct {
 }
+
+type GPSinSleep0x4009 struct {
+	UTCtime time.Time
+	GPSItem GPSItem
+}

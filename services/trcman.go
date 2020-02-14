@@ -57,6 +57,11 @@ func handleOBDConnection(obdconn *OBDConnection) {
 			frame := parser.Encapsulate(prefix.ProtocolVersion, prefix.DeviceID, 0x9001, lResponse)
 			Broadcast(fmt.Sprintf("sending 0x%x %s (%d Byte) from %s hex : \n<code>% x</code>", 0x9001, parser.GetMessageType(0x9001), len(frame), prefix.DeviceID, frame))
 			obdconn.send <- frame
+		case 0x4009:
+			_, payload := parser.GetPayload(recievedPayload, parser.GPSinSleep0x4009{})
+			gpsinSleep0x4009 := payload.(parser.GPSinSleep0x4009)
+			Broadcast(fmt.Sprintf("Received and parsed 0x%x %s (%d Byte) from %s hex : \n<code>%+v</code>", prefix.ProtocolID, msgType, len(recievedPayload), prefix.DeviceID, gpsinSleep0x4009))
+
 		default:
 			Broadcast(fmt.Sprintf("not handled"))
 		}
