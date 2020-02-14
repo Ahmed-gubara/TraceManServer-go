@@ -82,6 +82,8 @@ type LoginResponse0x9001 struct {
 	ServerTime time.Time
 }
 type Logout0x1002 struct {
+	StatData StatData
+	GPSData  GPSData
 }
 
 type Heartbeat0x1003 struct {
@@ -89,7 +91,37 @@ type Heartbeat0x1003 struct {
 type HearbeatResponse0x9003 struct {
 }
 
+type GPSData0x4001 struct {
+	Flag     uint8
+	StatData StatData
+	GPSData  GPSData
+	RPMData  RPMData
+}
 type GPSinSleep0x4009 struct {
 	UTCtime time.Time
 	GPSItem GPSItem
+}
+
+type Alarm0x4007 struct {
+	AlarmSeq   uint32
+	StatData   StatData
+	GPSData    GPSData
+	AlarmCount uint8
+	AlarmArray []AlarmData `length:"AlarmCount"`
+}
+type AlarmResponse0xC007 struct {
+	AlarmSeq uint32
+}
+type AlarmData struct {
+	NewAlarmFlag     uint8
+	AlarmType        uint8
+	AlarmDescription uint16
+	AlarmThreshold   uint16
+}
+type RPMData struct {
+	RPMCount uint8
+	RPMarray []RPMItem `length:"RPMCount"`
+}
+type RPMItem struct {
+	RPM uint16
 }
