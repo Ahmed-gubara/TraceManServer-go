@@ -52,7 +52,7 @@ func handleOBDConnection(obdconn *OBDConnection) {
 		case 0x1001:
 			_, payload := parser.GetPayload(recievedPayload, parser.Login0x1001{})
 			login0x1001 := payload.(parser.Login0x1001)
-			Broadcast(fmt.Sprintf("Received and parsed 0x%x %s (%d Byte) from %s hex : \n<code>%+v</code>", prefix.ProtocolID, msgType, len(recievedPayload), prefix.DeviceID, fr(login0x1001)))
+			Broadcast(fmt.Sprintf("Received and parsed 0x%x %s (%d Byte) from %s json : \n<code>%+v</code>", prefix.ProtocolID, msgType, len(recievedPayload), prefix.DeviceID, fr(login0x1001)))
 			lResponse := parser.LoginResponse0x9001{IPAddress: getIP(), Port: 9000, ServerTime: time.Now().UTC()}
 			Broadcast(fmt.Sprintf("Respoinding : \n<code>%+v</code>", lResponse))
 			frame := parser.Encapsulate(prefix.ProtocolVersion, prefix.DeviceID, 0x9001, lResponse)
@@ -62,7 +62,7 @@ func handleOBDConnection(obdconn *OBDConnection) {
 		case 0x1002:
 			_, payload := parser.GetPayload(recievedPayload, parser.Logout0x1002{})
 			logout0x1002 := payload.(parser.Logout0x1002)
-			Broadcast(fmt.Sprintf("Received and parsed 0x%x %s (%d Byte) from %s hex : \n<code>%+v</code>", prefix.ProtocolID, msgType, len(recievedPayload), prefix.DeviceID, fr(logout0x1002)))
+			Broadcast(fmt.Sprintf("Received and parsed 0x%x %s (%d Byte) from %s json : \n<code>%+v</code>", prefix.ProtocolID, msgType, len(recievedPayload), prefix.DeviceID, fr(logout0x1002)))
 
 		case 0x1003: // heartbeat message
 			frame := parser.Encapsulate(prefix.ProtocolVersion, prefix.DeviceID, 0x9003, parser.HearbeatResponse0x9003{})
@@ -71,12 +71,12 @@ func handleOBDConnection(obdconn *OBDConnection) {
 		case 0x4009:
 			_, payload := parser.GetPayload(recievedPayload, parser.GPSinSleep0x4009{})
 			gpsinSleep0x4009 := payload.(parser.GPSinSleep0x4009)
-			Broadcast(fmt.Sprintf("Received and parsed 0x%x %s (%d Byte) from %s hex : \n<code>%+v</code>", prefix.ProtocolID, msgType, len(recievedPayload), prefix.DeviceID, fr(gpsinSleep0x4009)))
+			Broadcast(fmt.Sprintf("Received and parsed 0x%x %s (%d Byte) from %s json : \n<code>%+v</code>", prefix.ProtocolID, msgType, len(recievedPayload), prefix.DeviceID, fr(gpsinSleep0x4009)))
 
 		case 0x4001:
 			_, payload := parser.GetPayload(recievedPayload, parser.GPSData0x4001{})
 			gpsData0x4001 := payload.(parser.GPSData0x4001)
-			Broadcast(fmt.Sprintf("Received and parsed 0x%x %s (%d Byte) from %s hex : \n<code>%+v</code>", prefix.ProtocolID, msgType, len(recievedPayload), prefix.DeviceID, fr(gpsData0x4001)))
+			Broadcast(fmt.Sprintf("Received and parsed 0x%x %s (%d Byte) from %s json : \n<code>%+v</code>", prefix.ProtocolID, msgType, len(recievedPayload), prefix.DeviceID, fr(gpsData0x4001)))
 
 		default:
 			Broadcast(fmt.Sprintf("not handled"))
