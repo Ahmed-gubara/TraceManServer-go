@@ -78,6 +78,11 @@ func handleOBDConnection(obdconn *OBDConnection) {
 			gpsData0x4001 := payload.(parser.GPSData0x4001)
 			Broadcast(fmt.Sprintf("Received and parsed 0x%x %s (%d Byte) from %s json : \n<code>%+v</code>", prefix.ProtocolID, msgType, len(recievedPayload), prefix.DeviceID, fr(gpsData0x4001)))
 
+		case 0x4007:
+			_, payload := parser.GetPayload(recievedPayload, parser.Alarm0x4007{})
+			alarm0x4007 := payload.(parser.Alarm0x4007)
+			Broadcast(fmt.Sprintf("Received and parsed 0x%x %s (%d Byte) from %s json : \n<code>%+v</code>", prefix.ProtocolID, msgType, len(recievedPayload), prefix.DeviceID, fr(alarm0x4007)))
+
 		default:
 			Broadcast(fmt.Sprintf("not handled"))
 		}
